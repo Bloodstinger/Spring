@@ -1,21 +1,14 @@
 package com.online.store.dao;
 
 import com.online.store.model.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDao {
+@Repository
+public interface UserDao extends CrudRepository<User, Long> {
 
-    void add(User user);
-
-    List<User> getAll();
-
-    Optional<User> getUserById(Long id);
-
-    Optional<User> getUserByEmail(String email);
-
-    void removeUser(User user);
-
-    void replaceUser(User user);
+    Optional<User> findByEmail(String email);
 }

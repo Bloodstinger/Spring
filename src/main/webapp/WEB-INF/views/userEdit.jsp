@@ -18,6 +18,8 @@
                      value="${email}"><br>
         New password <input name="password" type="password"> <br>
         Repeat new password <input name="repeatPassword" type="password"><br>
+        Role <br><input type="radio" value="ROLE_ADMIN" name="role"> Admin<br>
+        <input type="radio" value="ROLE_USER" name="role"> User<br>
         <input type="hidden" name="id" value="<%= request.getParameter("id")%>">
         <button type="submit"> Submit</button>
         <button type="submit" formaction="/admin/users" formmethod="get"> Back to users list</button>

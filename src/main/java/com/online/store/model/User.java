@@ -1,18 +1,23 @@
 package com.online.store.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +33,6 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    @Column(name = "salt")
-    private byte[] salt;
-
-
-
     public User() {
     }
 
@@ -43,11 +43,10 @@ public class User {
         this.role = role;
     }
 
-    public User(String email, String password, String role, byte[] salt) {
+    public User(String email, String password, String role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.salt = salt;
     }
 
     public Long getId() {
@@ -66,8 +65,40 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(getRole()));
+        return list;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -82,12 +113,20 @@ public class User {
         this.role = role;
     }
 
-    public byte[] getSalt() {
-        return salt;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(role, user.role);
     }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, role);
     }
 
     @Override
@@ -97,26 +136,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", salt=" + Arrays.toString(salt) +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(role, user.role) &&
-                Arrays.equals(salt, user.salt);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(id, email, password, role);
-        result = 31 * result + Arrays.hashCode(salt);
-        return result;
     }
 }

@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    boolean inDatabase(String email, String password);
+    boolean inDatabase(String email);
 
-    void addUser(String email, String password, String role, byte[] salt);
+    void addUser(String email, String password, String role);
 
     List<User> getAll();
 
@@ -20,4 +20,8 @@ public interface UserService {
     void removeUser(User user);
 
     void update(User user);
+
+    boolean isParamEmpty(String email, String password, String rPassword, String role);
+
+    void updateUser(String email, String password, String role);
 }

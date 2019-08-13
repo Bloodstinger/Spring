@@ -4,8 +4,8 @@ import com.online.store.model.Item;
 import com.online.store.model.User;
 import com.online.store.service.ItemService;
 import com.online.store.service.UserService;
-import com.online.store.utils.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -32,7 +31,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String usersList(Model model) {
+    public String usersList(Model model, @AuthenticationPrincipal User user) {
         List<User> allUsers = userService.getAll();
         model.addAttribute("allUsers", allUsers);
         return "users";
@@ -49,29 +48,23 @@ public class AdminController {
                                   @RequestParam(name = "repeatPassword", required = false) String rPassword,
                                   @RequestParam(name = "role", required = false) String role,
                                   Model model) throws NoSuchProviderException, NoSuchAlgorithmException {
-        if (email.isEmpty() || password.isEmpty() || rPassword.isEmpty() || role == null) {
+        if (!userService.isParamEmpty(email, password, rPassword, role)) {
             model.addAttribute("isValid", "All fields cannot be empty!");
             model.addAttribute("checkEmail", email);
-            return "register";
         } else {
             if (password.equals(rPassword)) {
-                Optional<User> optUser = userService.getUserByEmail(email);
-                if (optUser.isPresent()) {
+                if (userService.inDatabase(email)) {
                     model.addAttribute("isValid", "User " + email + " already registered!");
-                    return "register";
                 } else {
-                    byte[] salt = HashUtil.getSalt();
-                    String securePassword = HashUtil.getSecurePassword(password, salt);
-                    userService.addUser(email, securePassword, role, salt);
+                    userService.addUser(email, password, role);
                     model.addAttribute("isValid", "User " + email + " registered!");
-                    return "register";
                 }
             } else {
                 model.addAttribute("checkEmail", email);
                 model.addAttribute("isValid", "The password is not valid, try again");
-                return "register";
             }
         }
+        return "register";
     }
 
     @GetMapping("/userEdit")
@@ -88,21 +81,16 @@ public class AdminController {
                                       @RequestParam(name = "password", required = false) String password,
                                       @RequestParam(name = "repeatPassword", required = false) String rPassword,
                                       @RequestParam(name = "role", required = false) String role,
+                                      @AuthenticationPrincipal User user,
                                       Model model) throws NoSuchProviderException, NoSuchAlgorithmException {
-        Long userId = Long.valueOf(id);
-        User userToEdit = userService.getUserById(userId).get();
 
-        if (email.isEmpty() || password.isEmpty() || rPassword.isEmpty()) {
+        if (!userService.isParamEmpty(email, password, rPassword, role)) {
             model.addAttribute("isValid", "All fields cannot be empty");
             model.addAttribute("email", email);
             return "userEdit";
         } else {
             if (password.equals(rPassword)) {
-                byte[] salt = HashUtil.getSalt();
-                String securePassword = HashUtil.getSecurePassword(password, salt);
-                userToEdit.setEmail(email);
-                userToEdit.setPassword(securePassword);
-                userService.update(userToEdit);
+                userService.updateUser(email, password, role);
                 return "redirect:/admin/users";
             } else {
                 model.addAttribute("email", email);

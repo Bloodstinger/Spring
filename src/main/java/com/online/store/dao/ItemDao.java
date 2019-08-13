@@ -1,18 +1,12 @@
 package com.online.store.dao;
 
 import com.online.store.model.Item;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ItemDao {
+@Repository
+public interface ItemDao extends CrudRepository<Item, Long> {
 
-    void add(Item item);
-
-    List<Item> getAll();
-
-    Item getItem(Long id);
-
-    void removeItem(Item item);
-
-    void replaceItem(Item item);
 }

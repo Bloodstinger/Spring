@@ -1,24 +1,28 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: bloodstinger
-  Date: 04.07.19
-  Time: 17:51
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Hello</title>
+    <title>SHOP</title>
 </head>
 <body>
 <div align="center">
-    Sup bruh.<br>
-    Enter your email and password.<br>
-    ${isValid}
-    <form action="/admin/users" method="post">
-        Email <input name="email" type="email" value="${email}"><br>
-        Password <input name="password" type="password"><br>
-        <button type="submit"> Sign in</button>
+    ${loginMessage}
+    <form action='<spring:url value="/login"/>' method="post">
+        <table>
+            <tr>
+                <td>Логин</td>
+                <td><input type="text" name="login"></td>
+            </tr>
+            <tr>
+                <td>Пароль</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Войти"></td>
+            </tr>
+        </table>
     </form>
 </div>
 </body>

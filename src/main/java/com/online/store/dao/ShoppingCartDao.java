@@ -3,24 +3,21 @@ package com.online.store.dao;
 import com.online.store.model.Item;
 import com.online.store.model.ShoppingCart;
 import com.online.store.model.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ShoppingCartDao {
-
-    void createShoppingCart(User user);
-
-    void addItem(User user, Item item);
-
-    ShoppingCart getCartByUser(User user);
-
-    void removeItem(Item item);
-
-    void clearShoppingCart(User user);
-
-    int getSize();
-
-    List<Item> getAll();
-
-    User getUserById(Long id);
+@Repository
+public interface ShoppingCartDao extends CrudRepository<ShoppingCart, Long> {
+//
+//    void addItem(User user, Item item);//TODO
+//
+//    void deleteItemFromCart(Item item);
+//
+//    List<Item> getItemsFromShoppingCart();
+//
+//    ShoppingCart getCartByUser(User user);
+//
+//    void clearShoppingCart(User user);
 }

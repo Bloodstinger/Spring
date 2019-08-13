@@ -3,10 +3,8 @@ package com.online.store.controller;
 import com.online.store.model.Item;
 import com.online.store.model.User;
 import com.online.store.service.ItemService;
-import com.online.store.service.ShoppingCartService;
 import com.online.store.service.UserService;
 import com.online.store.utils.ConfirmCode;
-import com.online.store.utils.PriceCount;
 import com.online.store.utils.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,44 +22,45 @@ public class UserController {
 
     private UserService userService;
     private ItemService itemService;
-    private ShoppingCartService shoppingCartService;
+//    private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public UserController(UserService userService, ItemService itemService, ShoppingCartService shoppingCartService) {
+    public UserController(UserService userService, ItemService itemService/*,
+                          ShoppingCartService shoppingCartService*/) {
         this.userService = userService;
         this.itemService = itemService;
-        this.shoppingCartService = shoppingCartService;
+//        this.shoppingCartService = shoppingCartService;
     }
 
     @PostMapping("/buy")
     public String buyPostHandler(@RequestParam(name = "id") String id,
                                  Model model) {
         User user = userService.getUserByEmail("test@localhost").get();
-        if (shoppingCartService.getCartByUser(user) == null) {
-            shoppingCartService.createShoppingCart(user);
-        }
+//        if (shoppingCartService.getCartByUser(user) == null) {
+//            shoppingCartService.createShoppingCart(user);
+//        }
         Long itemId = Long.parseLong(id);
         Item itemToAdd = itemService.getItem(itemId);
-        shoppingCartService.addItem(user, itemToAdd);
-        model.addAttribute("count", shoppingCartService.getSize());
+//        shoppingCartService.addItem(user, itemToAdd);
+//        model.addAttribute("count", shoppingCartService.getSize());
         return "redirect:/user/items";
     }
 
     @GetMapping("/checkout")
     public String checkoutGetHandler(Model model) {
-        List<Item> items = shoppingCartService.getAll();
-        double totalPrice = PriceCount.getPrice(items);
-        model.addAttribute("allItems", items);
-        model.addAttribute("totalPrice", totalPrice);
+//        List<Item> items = shoppingCartService.getAll();
+//        double totalPrice = PriceCount.getPrice(items);
+//        model.addAttribute("allItems", items);
+//        model.addAttribute("totalPrice", totalPrice);
         return "user_checkout";
     }
 
     @PostMapping("/checkout")
     public String checkoutPostHandler(Model model) {
         User user = userService.getUserByEmail("test@localhost").get();
-        List<Item> items = shoppingCartService.getAll();
-        double totalPrice = PriceCount.getPrice(items);
-        model.addAttribute("totalPrice", totalPrice);
+//        List<Item> items = shoppingCartService.getAll();
+//        double totalPrice = PriceCount.getPrice(items);
+//        model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("email", user.getEmail());
         return "user_confirmation";
     }
