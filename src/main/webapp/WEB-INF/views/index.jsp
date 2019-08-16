@@ -8,7 +8,7 @@
 <body>
 <div align="center">
     ${loginMessage}
-    <form action='<spring:url value="/login"/>' method="post">
+    <form action='<spring:url value="/signin"/>' method="post">
         <table>
             <tr>
                 <td>Логин</td>

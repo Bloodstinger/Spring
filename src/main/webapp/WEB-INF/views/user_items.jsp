@@ -16,7 +16,7 @@
     <h2> List of all items</h2>
     Items in shopping cart :
     ${count}
-    <form action="/logout" method="post">
+    <form action="/signout" method="post">
         <button type="submit">Logout</button>
         <button formmethod="get" formaction="/user/checkout" type="submit">Checkout</button>
     </form>
