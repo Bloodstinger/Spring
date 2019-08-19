@@ -15,8 +15,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao;
-    private BCryptPasswordEncoder encoder;
+    private final UserDao userDao;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
     public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder encoder) {

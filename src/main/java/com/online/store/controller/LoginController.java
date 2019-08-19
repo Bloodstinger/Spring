@@ -16,8 +16,8 @@ import java.security.NoSuchProviderException;
 @Controller
 public class LoginController {
 
-    private UserService userService;
-    private ItemService itemService;
+    private final UserService userService;
+    private final ItemService itemService;
 
     @Autowired
     public LoginController(UserService userService,

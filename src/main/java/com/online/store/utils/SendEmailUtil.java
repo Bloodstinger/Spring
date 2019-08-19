@@ -1,5 +1,7 @@
 package com.online.store.utils;
 
+import org.apache.log4j.Logger;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -15,6 +17,8 @@ public class SendEmailUtil {
 
         final String username = "testuserma1488@gmail.com";
         final String password = "TestUser1488";
+        final Logger logger = Logger.getLogger(SendEmailUtil.class);
+
 
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -35,7 +39,7 @@ public class SendEmailUtil {
                     + "Your Confirm CODE: " + code);
             Transport.send(message);
         } catch (MessagingException e) {
-
+            logger.error("Error in sending email via email util. ", e);
         }
     }
 }

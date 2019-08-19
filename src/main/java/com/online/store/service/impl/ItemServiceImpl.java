@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private ItemDao itemDao;
+    private final ItemDao itemDao;
 
     @Autowired
     public ItemServiceImpl(ItemDao itemDao) {

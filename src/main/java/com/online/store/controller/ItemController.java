@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class ItemController {
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
     @Autowired
     public ItemController(ItemService itemService) {

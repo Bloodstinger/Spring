@@ -21,8 +21,8 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserService userService;
-    private ItemService itemService;
+    private final UserService userService;
+    private final ItemService itemService;
 
     @Autowired
     public AdminController(UserService userService, ItemService itemService) {

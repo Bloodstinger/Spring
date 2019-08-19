@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"codeGen", "code"})
 public class OrderController {
 
     private final ShoppingCartService shoppingCartService;
