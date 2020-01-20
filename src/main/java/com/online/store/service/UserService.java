@@ -24,4 +24,5 @@ public interface UserService {
     boolean isParamEmpty(String email, String password, String rPassword, String role);
 
     void updateUser(String email, String password, String role);
+
 }

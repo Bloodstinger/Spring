@@ -1,7 +1,6 @@
 package com.online.store.config;
 
 import com.online.store.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
@@ -53,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .successHandler((req, res, auth) -> {
-                    res.sendRedirect("/");
+                    req.getRequestDispatcher("/roleRedirect").forward(req, res);
                 })
                 .failureHandler((req, res, exp) -> {
                     String error = "";
@@ -74,14 +72,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 .csrf().disable();
-//        http.authorizeRequests().antMatchers("/admin/*").hasRole("ADMIN")
-//                .and()
-//                .authorizeRequests().antMatchers("/user/*").hasRole("USER")
-//                .and()
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().permitAll().logoutSuccessUrl("/login")
-//                .and()
-//                .csrf().disable();
     }
 }

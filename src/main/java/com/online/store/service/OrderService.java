@@ -1,13 +1,10 @@
 package com.online.store.service;
 
-import com.online.store.model.Item;
-import com.online.store.model.Order;
-
-import java.util.List;
+import com.online.store.model.ShoppingCart;
+import com.online.store.model.User;
 
 public interface OrderService {
 
-    void addOrder(Order order);
+    void addOrder(User user, ShoppingCart shoppingCart);
 
-    List<Item> getOrderItems();
 }

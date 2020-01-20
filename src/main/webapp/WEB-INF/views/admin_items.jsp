@@ -10,7 +10,7 @@
     <form>
     <input formmethod="get" formaction="/admin/users" type="submit" value="Back to all users">
     </form>
-    <form action="/logout" method="post">
+    <form action="/signout" method="post">
         <button type="submit">Logout</button>
     </form>
     <table border="1">

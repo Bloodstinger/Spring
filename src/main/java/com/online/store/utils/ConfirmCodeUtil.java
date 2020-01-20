@@ -1,6 +1,6 @@
 package com.online.store.utils;
 
-public class ConfirmCode {
+public class ConfirmCodeUtil {
 
     public static String code() {
         Double number = 1000 + Math.random() * 8999;

@@ -16,11 +16,7 @@
     <h2> List of all users</h2>
     <a href="/admin/register"> Add new user.</a> <br>
     <a href="/admin/items">List of all items</a> <br>
-    <form action="/logout" method="get">
-    @PostMapping("/login")
-    @GetMapping("/login")
-    public String logingPost(@AuthenticationPrincipal User user) {
-
+    <form action="/signout" method="get">
         <button type="submit">Logout</button>
     </form><br>
     <form action="/admin/users" method="get">

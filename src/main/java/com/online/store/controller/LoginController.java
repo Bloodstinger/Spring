@@ -5,13 +5,9 @@ import com.online.store.service.ItemService;
 import com.online.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import java.security.NoSuchAlgorithmException;
@@ -20,10 +16,8 @@ import java.security.NoSuchProviderException;
 @Controller
 public class LoginController {
 
-    private UserService userService;
-    private ItemService itemService;
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private final UserService userService;
+    private final ItemService itemService;
 
     @Autowired
     public LoginController(UserService userService,
@@ -33,29 +27,23 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String loginGetHandler(Model model, @AuthenticationPrincipal User user) {
+    public String loginGetHandler() {
         return "index";
     }
 
     @PostMapping("/")
-    public ModelAndView loginPostHandler(@SessionAttribute User user) {
-        ModelAndView model = new ModelAndView();
-        if (user.getRole().equalsIgnoreCase("admin")) {
-            model.setViewName("users");
-        } else {
-            model.setViewName("user_items");
-        }
-        return model;
+    public String loginPostHandler() {
+        return "index";
     }
 
-    @PostMapping("/login")
-    @GetMapping("/login")
-    public String logingPost(@AuthenticationPrincipal User user) {
+    @PostMapping("/roleRedirect")
+    @GetMapping("/roleRedirect")
+    public String loginPost(@AuthenticationPrincipal User user) {
         if (user != null) {
-            if (user.getRole().equalsIgnoreCase("admin")) {
-                return "users";
+            if (user.getRole().equalsIgnoreCase("role_admin")) {
+                return "redirect:/admin/users";
             } else {
-                return "user_items";
+                return "redirect:/user/items";
             }
         } else {
             return "index";
@@ -66,7 +54,7 @@ public class LoginController {
     public void init() throws NoSuchProviderException, NoSuchAlgorithmException {
         userService.addUser("root@localhost", "root", "ROLE_ADMIN");
         userService.addUser("test@localhost", "test", "ROLE_USER");
-        itemService.addItem("Knife", "Sharp one.", 15.5);
-        itemService.addItem("Form", "Sharp as well.", 73.2);
+        itemService.addItem("Knife", "Sharp one.", 15);
+        itemService.addItem("Form", "Sharp as well.", 73);
     }
 }
